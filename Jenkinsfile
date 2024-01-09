@@ -34,5 +34,12 @@ stage ('code compile'){
                           deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://18.144.126.156:9090/')], contextPath: null, war: '**/*.war'
             }
         }
+         stage('Send Email Notification') {
+            steps {
+                emailext subject: 'Build Notification',
+                          body: 'The build is successful. Your application is deployed.',
+                          recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+            }
+         }
     }
 }
